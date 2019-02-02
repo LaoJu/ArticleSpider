@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
+import datetime
 from scrapy.http import Request
 from urllib import parse
 
@@ -87,6 +88,11 @@ class JobboleSpider(scrapy.Spider):
         tags = ",".join(tag_list)
 
         article_item["title"] = title
+        #create_time在数据库中存储格式为date  str->datetime
+        try:
+            create_date = datetime.datetime.strptime(create_date,"%Y/%m/%d").date()
+        except Exception as e:
+            create_date = datetime.datetime.now().date()
         article_item["create_date"] = create_date
         article_item["url"] = response.url
         article_item["url_object_id"] = get_md5(response.url)
