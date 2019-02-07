@@ -75,6 +75,13 @@ IMAGES_URLS_FIELD = "front_image_url"
 project_dir = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE = os.path.join(project_dir,"image")
 
+import os
+import sys
+#获取根路径
+BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+# sys.path.insert(0,"E:\pythoncode\ArticleSpider\ArticleSpider")
+sys.path.insert(0,os.path.join(BASE_DIR,"ArticleSpider"))
+
 #过滤图片
 # IMAGES_MIN_WIDTH = 100 #图片宽
 # IMAGES_MIN_HEIGHT = 100 #图片高

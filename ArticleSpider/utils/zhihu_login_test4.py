@@ -44,6 +44,8 @@ print(session.get("https://www.zhihu.com/api/v3/account/api/login/qrcode/{0}/sca
 response = session.get("https://www.zhihu.com/people/edit",headers=HEADERS)
 
 if response.status_code == 200:
+    with open("index_page.html","wb") as file:
+        file.write(response.text.encode("utf-8"))
     print("[登录成功]")
     print(response.text[:10000])
 
