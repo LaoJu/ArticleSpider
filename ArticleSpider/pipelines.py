@@ -85,6 +85,7 @@ class MysqlTwistedPipeline(object):
             user=settings["MYSQL_USER"],
             passwd=settings["MYSQL_PASSWORD"],
             charset='utf8',
+            cursorclass=MySQLdb.cursors.DictCursor,
             use_unicode=True,
         )
         dbpool = adbapi.ConnectionPool("MySQLdb", **dbparms)
@@ -94,19 +95,19 @@ class MysqlTwistedPipeline(object):
     def process_item(self, item, spider):
         # 使用twisted将mysql插入编程异步执行
         query = self.dbpool.runInteraction(self.do_insert, item)
-        query.addErrback(self.handle_error)  # 处理异常
+        query.addErrback(self.handle_error,item,spider)  # 处理异常
 
-    def handle_error(self, failure):
+    def handle_error(self, failure,item,spider):
         # 处理异步插入的异常
         print(failure)
 
     def do_insert(self, cursor, item):
-        #TODO insert未补充
-        insert_sql = """
-                    insert into jobbole_article(title,url,create_date,fav_nums) 
-                    VALUES (%s, %s,%s,%s)
-                """
-        cursor.execute(insert_sql, (item["title"], item["url"], item["create_date"], item["fav_nums"]))
+        # 执行具体的插入
+        # 根据不同的item 构建不同的sql语句并插入到mysql中
+        insert_sql,params = item.get_insert_sql()
+        cursor.execute(insert_sql, params)
+
+
 
 
 class ArticleImagePipeline(ImagesPipeline):
