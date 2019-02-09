@@ -116,9 +116,7 @@ def handle_jobaddr(value):
 
 class LagouJobItemLoader(ItemLoader):
     # 自定义拉勾网job的Itemloader
-    pass
-
-
+    default_output_processor = TakeFirst()
 
 class LagouJobItem(scrapy.Item):
     # 拉勾网职位信息
