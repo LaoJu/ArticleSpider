@@ -6,7 +6,6 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from ArticleSpider.items import LagouJobItemLoader,LagouJobItem
 from ArticleSpider.utils.common import get_md5
-from ArticleSpider.settings import user_agent_list
 
 
 class LagouSpider(CrawlSpider):
@@ -14,9 +13,9 @@ class LagouSpider(CrawlSpider):
     allowed_domains = ['www.lagou.com']
     start_urls = ['https://www.lagou.com/']
 
-    #获取随机user_agent
-    user_agent_index = random.randint(0,len(user_agent_list)-1)
-    random_agent = user_agent_list[user_agent_index]
+    # 获取随机user_agent
+    # user_agent_index = random.randint(0,len(user_agent_list)-1)
+    # random_agent = user_agent_list[user_agent_index]
 
     custom_settings = {
         "COOKIES_ENABLED": False,
@@ -43,7 +42,7 @@ class LagouSpider(CrawlSpider):
             'Referer': 'https://www.lagou.com/',
             'Upgrade-Insecure-Requests': '1',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
-            'User-Agent': random_agent,
+            # 'User-Agent': random_agent,
 
 
 
