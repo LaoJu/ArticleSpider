@@ -55,6 +55,7 @@ def crawl_ips():
 
 
 class GetIP(object):
+
     def delete_ip(self, ip):
         #从数据库删除ip
         delete_sql = """
@@ -64,14 +65,15 @@ class GetIP(object):
         conn.commit()
         return True
 
-    def judge_ip(self, ip, port):
+    def judge_ip(self, ip, port,proxy_type):
         # 判断IP是否可用
-        http_url = "http://www.baidu.com"
-        proxy_url = "http://{0}:{1}".format(ip, port)
+        http_url = "http://www.jobbole.com/"
+        # proxy_url = "{0}://{1}:{2}".format(proxy_type.lower(),ip, port)
         try:
             proxy_dict = {
-                "http": proxy_url,
-                # "https":
+                # "http": proxy_url,
+                "http": "http://43.245.218.156:50312",
+
             }
             response = requests.get(http_url, proxies=proxy_dict)
 
@@ -92,17 +94,20 @@ class GetIP(object):
     def get_random_ip(self):
         # 从数据库随机取一个可用IP
         random_sql = """
-            select ip,port from proxy_ip order BY RAND() limit 1
+            select ip,port,proxy_type from proxy_ip order BY RAND() limit 1
         """
         result = cursor.execute(random_sql)
         for ip_info in cursor.fetchall():
             ip = ip_info[0]
             port = ip_info[1]
+            proxy_type = ip_info[2]
 
-            self.judge_ip(ip,port)
+            self.judge_ip(ip,port,proxy_type)
 
 
 # print(crawl_ips())
 
 get_ip = GetIP()
-get_ip.get_random_ip()
+# get_ip.get_random_ip()
+get_ip.judge_ip(1,2,3)
+
