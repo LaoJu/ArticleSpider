@@ -27,17 +27,17 @@ def crawl_ips():
         if one_ip != None:
             match_ip = re.match('.*"host":\s"(.+?)",', one_ip)
             if match_ip:
-                ip=match_ip.group(1)
+                ip = match_ip.group(1)
             else:
                 continue
             match_port = re.match('.*"port":\s?(.+?),', one_ip)
             if match_port:
-                port=match_port.group(1)
+                port = match_port.group(1)
             else:
                 continue
             match_type = re.match('.*"type":\s?"(.+?)",', one_ip)
             if match_type:
-                proxy_type=match_type.group(1)
+                proxy_type = match_type.group(1)
             else:
                 continue
 
@@ -47,16 +47,17 @@ def crawl_ips():
         cursor.execute(
             # values传递字符串要用单引号
             "INSERT INTO new_proxy_ip(ip,port,proxy_type) VALUES('{0}','{1}','{2}') ".format(ip_info[0],
-                                                                                       ip_info[1],
-                                                                                       ip_info[2])
+                                                                                             ip_info[1],
+                                                                                             ip_info[2])
         )
 
         conn.commit()
 
+
 class GetIP(object):
 
     def delete_ip(self, ip):
-        #从数据库删除ip
+        # 从数据库删除ip
         delete_sql = """
             delete from new_proxy_ip WHERE ip='{0}'
         """.format(ip)
@@ -64,10 +65,10 @@ class GetIP(object):
         conn.commit()
         return True
 
-    def judge_ip(self, ip, port,proxy_type):
+    def judge_ip(self, ip, port, proxy_type):
         # 判断IP是否可用
         http_url = "http://www.baidu.com/"
-        proxy_url = "{0}://{1}:{2}".format(proxy_type.lower(),ip, port)
+        proxy_url = "{0}://{1}:{2}".format(proxy_type.lower(), ip, port)
         try:
             proxy_dict = {
                 "http": proxy_url,
@@ -104,9 +105,14 @@ class GetIP(object):
             port = ip_info[1]
             proxy_type = ip_info[2]
 
-            self.judge_ip(ip,port,proxy_type)
+            judge_re = self.judge_ip(ip, port, proxy_type)
+            if judge_re:
+                return "{0}://{1}:{2}".format(proxy_type.lower(), ip, port)
+            else:
+                return self.get_random_ip()
 
 
-get_ip = GetIP()
-get_ip.get_random_ip()
-# get_ip.judge_ip(1,2,3)
+if __name__ == "__main__":
+    get_ip = GetIP()
+    get_ip.get_random_ip()
+    # get_ip.judge_ip(1,2,3)
