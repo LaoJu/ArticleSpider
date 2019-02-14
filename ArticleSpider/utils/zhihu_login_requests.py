@@ -104,7 +104,7 @@ def zhihu_login():
         login_status = is_login()
         if login_status:
             print("[已登录]")
-            return True
+            return session
         else:
             print("[cookie过期，删除本地cookie后重新登录]")
             request_qrcode()
@@ -114,7 +114,7 @@ def zhihu_login():
                 print("[登录成功]")
                 # 保存cookie到本地
                 session.cookies.save()
-                return True
+                return session
             else:
                 print("[登录失败，正在重新登录]")
                 zhihu_login()
@@ -127,7 +127,7 @@ def zhihu_login():
             print("[登录成功]")
             # 保存cookie到本地
             session.cookies.save()
-            return True
+            return session
         else:
             print("[登录失败，正在重新登录]")
             zhihu_login()
