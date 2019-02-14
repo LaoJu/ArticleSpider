@@ -19,22 +19,36 @@ from scrapy.selector import Selector
 # browser.quit()
 
 
-options = webdriver.ChromeOptions()
-options.add_argument('lang=zh_CN.UTF-8')
-options.add_argument(
-    'user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"')
+#知乎登录
+# options = webdriver.ChromeOptions()
+# options.add_argument('lang=zh_CN.UTF-8')
+# options.add_argument(
+#     'user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"')
+#
+#
+# browser = webdriver.Chrome(executable_path="E:/chromedriver_win32/chromedriver.exe",chrome_options=options)
+#
+# browser.get("https://www.zhihu.com/signup?next=%2F")
+#
+# # 点击登录跳转页面至用户名密码登录
+# browser.find_element_by_css_selector(".SignContainer-switch span").click()
+# # 找到用户名填充
+# browser.find_element_by_css_selector("input[name='username']").send_keys("XX")
+# # 找到密码填充
+# browser.find_element_by_css_selector("input[name='password']").send_keys("XX")
+#
+# # 点击登录
+# browser.find_element_by_css_selector("button.SignFlow-submitButton").click()
 
 
-browser = webdriver.Chrome(executable_path="E:/chromedriver_win32/chromedriver.exe",chrome_options=options)
 
-browser.get("https://www.zhihu.com/signup?next=%2F")
 
-# 点击登录跳转页面至用户名密码登录
-browser.find_element_by_css_selector(".SignContainer-switch span").click()
-# 找到用户名填充
-browser.find_element_by_css_selector("input[name='username']").send_keys("XX")
-# 找到密码填充
-browser.find_element_by_css_selector("input[name='password']").send_keys("XX")
+#微博登陆
 
-# 点击登录
-browser.find_element_by_css_selector("button.SignFlow-submitButton").click()
+browser = webdriver.Chrome(executable_path="E:/chromedriver_win32/chromedriver.exe")
+browser.get("https://weibo.com/")
+import time
+time.sleep(15)
+browser.find_element_by_css_selector("#loginname").send_keys("15082408104")
+browser.find_element_by_css_selector(".info_list.password input[node-type='password']").send_keys("864196621chen")
+browser.find_element_by_css_selector(".info_list.login_btn a[node-type='submitBtn").click()
