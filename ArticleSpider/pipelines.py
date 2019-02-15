@@ -53,7 +53,7 @@ class JsonExporterPipeline(object):
 
 
 class MysqlPipeline(object):
-    #采用同步机制写入
+    # 采用同步机制写入
     # 自定义数据存储pipeline
     def __init__(self):
         # TODO
@@ -95,29 +95,27 @@ class MysqlTwistedPipeline(object):
     def process_item(self, item, spider):
         # 使用twisted将mysql插入编程异步执行
         query = self.dbpool.runInteraction(self.do_insert, item)
-        query.addErrback(self.handle_error,item,spider)  # 处理异常
+        query.addErrback(self.handle_error, item, spider)  # 处理异常
 
-    def handle_error(self, failure,item,spider):
-        # 处理异步插入的异常
+    def handle_error(self, failure, item, spider):
+        # 处理异步插入的异常 错误信息可写入日志便于处理
+        #传入item  方便debug
         print(failure)
 
     def do_insert(self, cursor, item):
         # 执行具体的插入
         # 根据不同的item 构建不同的sql语句并插入到mysql中
-        insert_sql,params = item.get_insert_sql()
+        insert_sql, params = item.get_insert_sql()
         cursor.execute(insert_sql, params)
-
-
 
 
 class ArticleImagePipeline(ImagesPipeline):
     # 定制处理封面图的pipeline
     def item_completed(self, results, item, info):
-        if "front_image_path" in item: #此pipeline对所有item做处理，判断是否有图片需要处理
+        if "front_image_path" in item:  # 此pipeline对所有item做处理，判断是否有图片需要处理
             for ok, value in results:
                 # 提取图片下载后在本地的路径
                 image_file_path = value["path"]
             item["front_image_path"] = image_file_path
 
         return item
-
