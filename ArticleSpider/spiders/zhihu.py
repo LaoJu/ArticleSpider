@@ -45,9 +45,8 @@ class ZhihuSpider(scrapy.Spider):
                 print(request_url)
                 yield scrapy.Request(request_url, headers=self.headers, callback=self.parse_question)
             else:
-                pass
                 # 不是问题页面，跟随此页面寻找其他url
-                # yield scrapy.Request(url, headers=self.headers, callback=self.parse)
+                yield scrapy.Request(url, headers=self.headers, callback=self.parse)
 
     def parse_question(self, response):
 
@@ -66,17 +65,22 @@ class ZhihuSpider(scrapy.Spider):
         item_loader.add_css("topics", ".QuestionHeader-topics .Popover div::text")
 
         question_item = item_loader.load_item()
+        if question_item.get("content") == None:
+            item_loader.add_value("content","None")
+            question_item = item_loader.load_item()
+
         print("sth")
         #分析回答 最多只能一次提取20条
         # answer_num = int(question_item.get("answer_num"))
         yield scrapy.Request(self.start_answer_url.format(question_id, 20, 0), headers=self.headers,
                              callback=self.parse_answer)
         #yield 出去的item 被路由到pipline里面
-        # yield question_item
+        #TODO
+        yield question_item
 
     def parse_answer(self, response):
         #解析回答
-        ans_json = json.load(response.text)
+        ans_json = json.loads(response.text)
         is_end = ans_json["paging"]["is_end"]
         next_url = ans_json["paging"]["next"]
 
@@ -87,8 +91,8 @@ class ZhihuSpider(scrapy.Spider):
             answer_item["url"] = answer["url"]
             answer_item["question_id"] = answer["question"]["id"]
             #匿名回答没有author_id
-            answer_item["author_id"] = answer["author"]["id"] if "id" in answer["author"] else None
-            answer_item["content"] = answer["content"] if "content" in answer else None
+            answer_item["author_id"] = answer["author"]["id"] if "id" in answer["author"] else "None"
+            answer_item["content"] = answer["content"] if "content" in answer else "None"
             answer_item["praise_num"] = answer["voteup_count"]
             answer_item["comments_num"] = answer["comment_count"]
             answer_item["create_time"] = answer["created_time"]
