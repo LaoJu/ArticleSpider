@@ -123,12 +123,36 @@ class RandomUserAgentMiddleware(object):
         # getattr()
         def get_ua():
             return getattr(self.ua, self.ua_type)
+
         # random_agent = get_ua()
         request.headers.setdefault('User-Agent', get_ua())
 
 
 class RandomRroxyMiddleware(object):
-    #动态IP代理设置
+    # 动态IP代理设置
     def process_request(self, request, spider):
         get_ip = GetIP()
         request.meta["proxy"] = get_ip.get_random_ip()
+
+
+# from selenium import webdriver
+# from scrapy.http import HtmlResponse
+#
+# #未加入settings
+# class JSPageMiddleware(object):
+#
+#     def __init__(self):
+#         self.browser = webdriver.Chrome(executable_path="E:/chromedriver_win32/chromedriver.exe")
+#         super(JSPageMiddleware, self).__init__()
+#
+#     # 通过chrome请求动态网页
+#     def process_request(self, request, spider):
+#         # 以jobbole为例
+#         if spider.name == "jobbole":
+#             spider.browser.get(request.url)
+#             import time
+#             time.sleep(3)
+#             print("访问：{0}".format(request.url))
+#
+#             return HtmlResponse(url=spider.browser.current_url, body=spider.browser.page_source, encoding="utf-8",
+#                                 request=request)

@@ -43,12 +43,25 @@ from scrapy.selector import Selector
 
 
 
-#微博登陆
+# #微博登陆
+#
+# browser = webdriver.Chrome(executable_path="E:/chromedriver_win32/chromedriver.exe")
+# browser.get("https://weibo.com/")
+# import time
+# time.sleep(15)
+# browser.find_element_by_css_selector("#loginname").send_keys("15082408104")
+# browser.find_element_by_css_selector(".info_list.password input[node-type='password']").send_keys("864196621chen")
+# browser.find_element_by_css_selector(".info_list.login_btn a[node-type='submitBtn").click()
 
-browser = webdriver.Chrome(executable_path="E:/chromedriver_win32/chromedriver.exe")
-browser.get("https://weibo.com/")
-import time
-time.sleep(15)
-browser.find_element_by_css_selector("#loginname").send_keys("15082408104")
-browser.find_element_by_css_selector(".info_list.password input[node-type='password']").send_keys("864196621chen")
-browser.find_element_by_css_selector(".info_list.login_btn a[node-type='submitBtn").click()
+
+#设置chromedriver不加载图片
+chrome_opt = webdriver.ChromeOptions()
+prefs = {
+    "profile.managed_default_content_settings.images":2,
+}
+chrome_opt.add_argument("prefs",prefs)
+browser = webdriver.Chrome(executable_path="E:/chromedriver_win32/chromedriver.exe",chrome_options=chrome_opt)
+
+
+
+

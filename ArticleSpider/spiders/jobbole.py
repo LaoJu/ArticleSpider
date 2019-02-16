@@ -16,6 +16,17 @@ class JobboleSpider(scrapy.Spider):
     # start_urls = ['http://blog.jobbole.com/']
     start_urls = ['http://blog.jobbole.com/all-posts/']
 
+    # def __init__(self):
+    #     self.browser = webdriver.Chrome(executable_path="D:/Temp/chromedriver.exe")
+    #     super(JobboleSpider, self).__init__()
+    #     dispatcher.connect(self.spider_closed, signals.spider_closed)
+    #
+    # def spider_closed(self, spider):
+    #     #当爬虫退出的时候关闭chrome
+    #     print ("spider closed")
+    #     self.browser.quit()
+
+
     def parse(self, response):
         """
         1.获取文章列表页中的文章url交给scrapy进行下载并解析
