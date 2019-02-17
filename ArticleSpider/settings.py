@@ -115,10 +115,10 @@ RANDOM_UA_TYPE = "random"
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-MYSQL_HOST = "118.24.117.85"
+MYSQL_HOST = ""
 MYSQL_DBNAME = "article_spider"
 MYSQL_USER = "root"
-MYSQL_PASSWORD = "616632"
+MYSQL_PASSWORD = ""
 
 
 SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
